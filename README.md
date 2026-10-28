@@ -52,29 +52,7 @@ Personas, behavioral templates, and system prompts are fully customizable in `co
 
 ## 🚀 Usage
 
-### Step 1: Prepare Your Own Evaluation Data
-
-This public release contains the **evaluation framework and configuration**, but excludes the original research dataset, manually reviewed seed-intent library, experiment outputs, and statistical analysis code.
-
-Create your own local `data/seed_intents/intent_prompts_final.jsonl` file with one JSON object per line. The required fields are:
-
-- `intent_id`: unique identifier
-- `risk_category`: one of the five categories in `data/risk_categories.yml`
-- `core_intent`: the reviewed core intent
-- `original_prompt`: the original prompt for single-turn baselines
-
-The default paired evaluation design selects 160 unique intents: 2 personas × 4 strategies × 5 risk categories × 4 repetitions, requiring at least 32 unique reviewed intents in each risk category.
-
-You may extract candidate intents from your own appropriately sourced prompts. Create `data/seed_intents/raw_harmful.csv` with `Prompt` and `Category` columns, then run:
-
-```bash
-python scripts/01_prepare_intents.py
-```
-
-The script writes `data/seed_intents/intent_extracted_draft.jsonl`. Manually review, filter, classify, and deduplicate the records into `intent_prompts_final.jsonl` before evaluation. Local datasets are ignored by Git.
-
-The original paper's exact experimental results require the original data and are not reproducible from this framework-only release alone.
-### Step 2: Run Evaluations
+### Run Evaluations
 
 To execute the multi-turn dynamic interaction evaluation (Main Experiment):
 ```bash
@@ -102,7 +80,6 @@ MinorEval/
     02_evaluation_library.yml
   data/
     risk_categories.yml
-    seed_intents/                 # Your local dataset (not committed)
   minoreval/
     __init__.py
     api_handler.py
@@ -114,6 +91,7 @@ MinorEval/
   requirements.txt
   README.md
 ```
+
 ## 📊 Experimental Design
 The framework enforces a mathematically locked paired design for fair cross-model comparison:
 - **2 Personas** $\times$ **4 Attack Strategies** $\times$ **5 Risk Categories** $\times$ **4 Repetitions** = **160 Unique Scenarios**.
